@@ -48,7 +48,7 @@ func (c *fileConn) SetWriteDeadline(t time.Time) error {
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Println("Use: tls_gen <Domain Name>")
+		fmt.Println("Use as: " + os.Args[0] + " <Domain Name>")
 		return
 	}
 
