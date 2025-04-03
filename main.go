@@ -47,7 +47,7 @@ func (c *fileConn) SetWriteDeadline(t time.Time) error {
 }
 
 func main() {
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		fmt.Println("Use as: " + os.Args[0] + " <Domain Name>")
 		return
 	}
@@ -99,8 +99,33 @@ func main() {
 	tlsConn := tls.Client(conn, tlsConfig)
 	defer tlsConn.Close()
 
-	err = tlsConn.Handshake()
+	tlsConn.Handshake()
 	tlsConn.Write([]byte("GET / HTTP/1.1\r\nHost: " + os.Args[1] + "\r\n\r\n"))
+
+	if len(os.Args) > 2 && os.Args[2] == "-rk" {
+		var rk_d []byte
+
+		if len(os.Args) > 3 {
+			rk_d = []byte(os.Args[3])
+		} else {
+			rk_d = []byte("RKN SUCK MY CHLEN PLEASE(((")
+		}
+
+		blockSize := 5
+
+		for i := 0; i < len(rk_d); i += blockSize {
+			end := i + blockSize
+			if end > len(rk_d) {
+				end = len(rk_d)
+			}
+
+			conn.Write(rk_d[i:end])
+
+			if end < len(rk_d) {
+				conn.Write([]byte{rk_d[i] * 5})
+			}
+		}
+	}
 
 	fmt.Println("TLS writed to tls_clienthello_" + os.Args[1] + ".bin")
 }
